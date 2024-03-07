@@ -8,5 +8,6 @@ export const envConfig = {
   igLogin: env.get('IG-LOGIN').required().asString(),
   igPassword: env.get('IG-PASSWORD').required().asString(),
   igTarget: env.get('IG-TARGET').required().asString(),
+  proxy: env.get('PROXY').default('').asUrlString(),
 };
 export default envConfig;

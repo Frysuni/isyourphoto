@@ -123,6 +123,7 @@ function parseCollection(item: UserFeedResponseItemsItem) {
 async function login() {
   const ig = new IgApiClient();
   ig.state.generateDevice(envConfig.igLogin);
+  ig.state.proxyUrl = envConfig.proxy;
   await ig.simulate.preLoginFlow();
   await ig.account.login(envConfig.igLogin, envConfig.igPassword);
   return ig;
