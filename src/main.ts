@@ -18,7 +18,7 @@ process.on('uncaughtException', handleError.bind('UncaughtException'));
 process.on('unhandledRejection', handleError.bind('UnhandledRejection'));
 
 async function scan() {
-  process.stdout.write('SCAN Started.');
+  process.stdout.write('SCAN Started.\n');
   const startTime = Date.now();
 
   const ig = await login().catch(handleError.bind('LOGIN'));
