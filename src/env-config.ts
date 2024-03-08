@@ -9,5 +9,6 @@ export const envConfig = {
   igPassword: env.get('IG-PASSWORD').required().asString(),
   igTarget: env.get('IG-TARGET').required().asString(),
   proxy: env.get('PROXY').asString(),
+  server: env.get('SERVER_PORT').default('0').asPortNumber(),
 };
 export default envConfig;

@@ -1,18 +1,42 @@
 import axios from 'axios';
-import { appendFileSync, createWriteStream, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'fs';
+import { appendFileSync, createReadStream, createWriteStream, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'fs';
+import { createServer } from 'http';
 import { IgApiClient, UserFeedResponseItemsItem } from 'instagram-private-api';
 import { resolve } from 'node:path';
 import { Readable } from 'stream';
 import envConfig from './env-config';
 
+const cookiesFile = resolve(process.cwd(), 'cookies.json');
 const errorsFile = resolve(process.cwd(), 'errors.txt');
 const storageDir = resolve(process.cwd(), 'storage');
 if (!existsSync(storageDir)) mkdirSync(storageDir);
 
 void function() {
+  if (envConfig.server !== 0 && envConfig.server) serve();
   scan();
   setInterval(scan, 1.5 * 60 * 60 * 1000);
+
 }();
+
+async function serve() {
+  const server = createServer((request, response) => {
+    const url = new URL(request.url ?? '/', `http://${request.headers.host}`);
+    const file = resolve(storageDir, url.pathname.startsWith('/') ? url.pathname.replace('/', '') : url.pathname);
+
+    if (!existsSync(file) || !statSync(file).isFile() || !file.includes(storageDir)) {
+      response.statusCode = 404;
+      response.statusMessage = 'Not found.';
+      response.end();
+      return;
+    }
+
+    response.statusCode = 200;
+    const readStream = createReadStream(file);
+    readStream.pipe(response);
+  });
+
+  server.listen(envConfig.server);
+}
 
 process.on('uncaughtException', handleError.bind('UncaughtException'));
 process.on('unhandledRejection', handleError.bind('UnhandledRejection'));
@@ -30,11 +54,12 @@ async function scan() {
   const userFeed = ig.feed.user(user.pk);
 
   const metadata: {
+    code: string,
     caption: string,
     date: string,
     images: string[],
   }[] = [];
-  const save = (caption: string, date: string, images: string[]) => metadata.push({ caption, date, images });
+  const save = (code: string, caption: string, date: string, images: string[]) => metadata.push({ code, caption, date, images });
 
   do {
     const items = await userFeed.items().catch(handleError.bind('ITMES'));
@@ -49,8 +74,8 @@ async function scan() {
 
       if (existsSync(collectionDir)) {
         const imagesInDir = readdirSync(resolve(collectionDir));
-        imagesInDir.map(imageName => serializeImagePath(resolve(collectionDir, imageName)));
-        save(collection.caption, collection.date, imagesInDir);
+        const serialized = imagesInDir.map(imageName => serializeImagePath(resolve(collectionDir, imageName)));
+        save(collection.code, collection.caption, collection.date, serialized);
         continue;
       };
       mkdirSync(collectionDir);
@@ -72,6 +97,7 @@ async function scan() {
       }
 
       save(
+        collection.code,
         collection.caption,
         collection.date,
         images,
@@ -80,7 +106,7 @@ async function scan() {
 
   } while (userFeed.isMoreAvailable());
 
-  writeFileSync(resolve(storageDir, 'metadata.json'), JSON.stringify(metadata, undefined, 2));
+  writeFileSync(resolve(storageDir, 'manifest.json'), JSON.stringify(metadata));
 
   const time = ~~((Date.now() - startTime) / 1000);
   process.stdout.write(`SCAN Ended in ${time} seconds.\n\n`);
@@ -105,8 +131,7 @@ function parseCollection(item: UserFeedResponseItemsItem) {
   const date = new Date(item.taken_at * 1000).toLocaleDateString();
 
   const images = item.carousel_media!.map(media => {
-    const url = media.image_versions2.candidates.sort((a, b) => a.height * a.width - b.height * b.width)[0].url;
-
+    const url = media.image_versions2.candidates.sort((a, b) => a.height * a.width + b.height * b.width)[0].url;
     return {
       id: media.id,
       url,
@@ -117,6 +142,7 @@ function parseCollection(item: UserFeedResponseItemsItem) {
     caption,
     date,
     images,
+    code: item.code,
   };
 }
 
@@ -124,8 +150,36 @@ async function login() {
   const ig = new IgApiClient();
   ig.state.generateDevice(envConfig.igLogin);
   if (envConfig.proxy) ig.state.proxyUrl = envConfig.proxy;
-  await ig.simulate.preLoginFlow();
-  await ig.account.login(envConfig.igLogin, envConfig.igPassword);
+
+  try {
+    if (existsSync(cookiesFile)) {
+      const savedCookies = readFileSync(cookiesFile, "utf8");
+      await ig.state.deserializeCookieJar(savedCookies);
+    }
+
+    await ig.account.currentUser();
+
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      'response' in error &&
+      error.response &&
+      (error.response as any)?.statusCode &&
+      (error.response as any)?.statusCode === 403
+    ) {
+      await ig.simulate.preLoginFlow();
+      await ig.account.login(envConfig.igLogin, envConfig.igPassword);
+      // process.nextTick(async () => await ig.simulate.postLoginFlow());
+      process.nextTick(async () => {
+        const cookies = await ig.state.serializeCookieJar();
+        writeFileSync(cookiesFile, JSON.stringify(cookies, undefined, 2));
+      });
+    } else {
+      throw error;
+    }
+  }
+  process.stdout.write('Logged in.\n');
+
   return ig;
 }
 

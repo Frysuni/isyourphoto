@@ -3,3 +3,4 @@ node_modules
 storage
 errors.txt
 yarn.lock
+cookies.json
