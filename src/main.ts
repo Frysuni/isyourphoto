@@ -1,11 +1,11 @@
-import axios from 'axios';
-import { appendFileSync, createReadStream, createWriteStream, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'fs';
+import { Canvas, loadImage } from '@napi-rs/canvas';
+import { appendFileSync, createReadStream, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'fs';
 import { createServer } from 'http';
 import { IgApiClient, UserFeedResponseItemsItem } from 'instagram-private-api';
 import { resolve } from 'node:path';
-import { Readable } from 'stream';
 import envConfig from './env-config';
 
+const logoFile = resolve(process.cwd(), 'logo.png');
 const cookiesFile = resolve(process.cwd(), 'cookies.json');
 const errorsFile = resolve(process.cwd(), 'errors.txt');
 const storageDir = resolve(process.cwd(), 'storage');
@@ -20,6 +20,8 @@ void function() {
 
 async function serve() {
   const server = createServer((request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
     const url = new URL(request.url ?? '/', `http://${request.headers.host}`);
     const file = resolve(storageDir, url.pathname.startsWith('/') ? url.pathname.replace('/', '') : url.pathname);
 
@@ -113,21 +115,26 @@ async function scan() {
 }
 
 async function downloadImage(url: string, path: string) {
-  const request = await axios<Readable>({
-    url,
-    method: 'GET',
-    responseType: 'stream',
-  });
-  const writeStream = createWriteStream(path);
-  request.data.pipe(writeStream);
-  await new Promise(res => setInterval(res, 200));
+  const image = await loadImage(url);
+  const logo = await loadImage(logoFile);
+
+  const canvas = new Canvas(image.width, image.height);
+  const ctx = canvas.getContext('2d');
+
+  ctx.drawImage(image, 0, 0);
+
+  ctx.globalAlpha = 0.5;
+  ctx.drawImage(logo, (canvas.width  - logo.width) * 0.5, (canvas.height - logo.height) * 0.9);
+
+  writeFileSync(path, canvas.toBuffer('image/webp'));
+  await new Promise(res => setInterval(res, 100));
   return true;
 }
 
 function parseCollection(item: UserFeedResponseItemsItem) {
   if (item.media_type !== 8) return false;
 
-  const caption = item.caption?.text.split('\n')[0] ?? 'IsYourPhoto';
+  const caption = item.caption?.text.split('\n')[0] ?? ' ';
   const date = new Date(item.taken_at * 1000).toLocaleDateString();
 
   const images = item.carousel_media!.map(media => {
@@ -167,7 +174,7 @@ async function login() {
       (error.response as any)?.statusCode &&
       (error.response as any)?.statusCode === 403
     ) {
-      await ig.simulate.preLoginFlow();
+      // await ig.simulate.preLoginFlow();
       await ig.account.login(envConfig.igLogin, envConfig.igPassword);
       // process.nextTick(async () => await ig.simulate.postLoginFlow());
       process.nextTick(async () => {
