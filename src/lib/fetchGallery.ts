@@ -3,14 +3,17 @@ export const getGalleryURL = (path: string) => {
   return url;
 };
 
-const fetchGalleryI = (async () => {
-  const mergedOptions = {
-    headers: {
-      "Content-Type": "application/json",
+const bb = async () => {
+  const response = await fetch(
+    getGalleryURL('/manifest.json'),
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      mode: 'no-cors',
     }
-  };
+  ).catch(e => e);
 
-  const response = await fetch(getGalleryURL('/manifest.json'), mergedOptions).catch(e => e);
   if (response instanceof Error) {
     console.log(response);
     throw response;
@@ -25,8 +28,11 @@ const fetchGalleryI = (async () => {
     return d;
   })
   return data;
-})();
+};
+
+let gallery = bb();
+setInterval(() => gallery = bb(), 53_000);
 
 export const fetchGallery = async () => {
-  return await fetchGalleryI;
+  return await gallery;
 };
