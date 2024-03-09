@@ -1,12 +1,11 @@
 import { Canvas, loadImage } from '@napi-rs/canvas';
-import { appendFileSync, createReadStream, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'fs';
+import { appendFileSync, createReadStream, existsSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from 'fs';
 import { createServer } from 'http';
 import { IgApiClient, UserFeedResponseItemsItem } from 'instagram-private-api';
 import { resolve } from 'node:path';
 import envConfig from './env-config';
 
 const logoFile = resolve(process.cwd(), 'logo.png');
-const cookiesFile = resolve(process.cwd(), 'cookies.json');
 const errorsFile = resolve(process.cwd(), 'errors.txt');
 const storageDir = resolve(process.cwd(), 'storage');
 if (!existsSync(storageDir)) mkdirSync(storageDir);
@@ -115,6 +114,13 @@ async function scan() {
 }
 
 async function downloadImage(url: string, path: string) {
+  if (envConfig.proxyCustom && envConfig.proxyPass) {
+    const proxyUrl = new URL(envConfig.proxyCustom);
+    proxyUrl.searchParams.append('pass', envConfig.proxyPass);
+    proxyUrl.searchParams.append('from', url);
+    url = proxyUrl.href;
+  }
+
   const image = await loadImage(url);
   const logo = await loadImage(logoFile);
 
@@ -123,11 +129,12 @@ async function downloadImage(url: string, path: string) {
 
   ctx.drawImage(image, 0, 0);
 
-  ctx.globalAlpha = 0.5;
-  ctx.drawImage(logo, (canvas.width  - logo.width) * 0.5, (canvas.height - logo.height) * 0.9);
+  ctx.globalAlpha = 0.33;
+  const random = (i: number) => ~~(i * Math.random());
+  ctx.drawImage(logo, random(canvas.width  - logo.width), random(canvas.height - logo.height));
 
   writeFileSync(path, canvas.toBuffer('image/webp'));
-  await new Promise(res => setInterval(res, 100));
+
   return true;
 }
 
@@ -156,35 +163,12 @@ function parseCollection(item: UserFeedResponseItemsItem) {
 async function login() {
   const ig = new IgApiClient();
   ig.state.generateDevice(envConfig.igLogin);
-  if (envConfig.proxy) ig.state.proxyUrl = envConfig.proxy;
+  if (envConfig.proxyIg) ig.state.proxyUrl = envConfig.proxyIg;
 
-  try {
-    if (existsSync(cookiesFile)) {
-      const savedCookies = readFileSync(cookiesFile, "utf8");
-      await ig.state.deserializeCookieJar(savedCookies);
-    }
+  // await ig.simulate.preLoginFlow();
+  await ig.account.login(envConfig.igLogin, envConfig.igPassword);
+  // process.nextTick(async () => await ig.simulate.postLoginFlow());
 
-    await ig.account.currentUser();
-
-  } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      'response' in error &&
-      error.response &&
-      (error.response as any)?.statusCode &&
-      (error.response as any)?.statusCode === 403
-    ) {
-      // await ig.simulate.preLoginFlow();
-      await ig.account.login(envConfig.igLogin, envConfig.igPassword);
-      // process.nextTick(async () => await ig.simulate.postLoginFlow());
-      process.nextTick(async () => {
-        const cookies = await ig.state.serializeCookieJar();
-        writeFileSync(cookiesFile, JSON.stringify(cookies, undefined, 2));
-      });
-    } else {
-      throw error;
-    }
-  }
   process.stdout.write('Logged in.\n');
 
   return ig;
@@ -202,11 +186,11 @@ function handleError(this: string, error: unknown): false {
     errorMessage = error.message;
   }
 
-  const message = `${dateString} - [${this}] ${errorName}: ${errorMessage}`;
+  const message = `${dateString} - [${this}] ${errorName}: ${errorMessage}\n`;
   process.stdout.write(message);
 
   if (!existsSync(errorsFile)) writeFileSync(errorsFile, '');
-  appendFileSync(errorsFile, message + '\n');
+  appendFileSync(errorsFile, message);
 
   return false;
 }
