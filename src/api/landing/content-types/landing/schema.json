@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "landings",
+  "info": {
+    "singularName": "landing",
+    "pluralName": "landings",
+    "displayName": "Landing",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "photos": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.photo"
+    }
+  }
+}

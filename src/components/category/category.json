@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_categories",
+  "info": {
+    "displayName": "collection",
+    "icon": "folder-plus",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "images": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.photo"
+    }
+  }
+}

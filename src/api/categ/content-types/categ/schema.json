@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "categs",
+  "info": {
+    "singularName": "categ",
+    "pluralName": "categs",
+    "displayName": "Categ",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "collection": {
+      "type": "component",
+      "repeatable": false,
+      "component": "category.category"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
