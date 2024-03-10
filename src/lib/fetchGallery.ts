@@ -10,7 +10,6 @@ const bb = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      mode: 'no-cors',
     }
   ).catch(e => e);
 
@@ -19,6 +18,7 @@ const bb = async () => {
     throw response;
   }
   if (!response.ok) {
+    console.log(response.status)
     console.error(response.statusText);
     throw new Error(response.statusText);
   }
