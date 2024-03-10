@@ -1,11 +1,11 @@
-import { Canvas, loadImage } from '@napi-rs/canvas';
-import { appendFileSync, createReadStream, existsSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from 'fs';
+import axios from 'axios';
+import { appendFileSync, createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from 'fs';
 import { createServer } from 'http';
 import { IgApiClient, UserFeedResponseItemsItem } from 'instagram-private-api';
 import { resolve } from 'node:path';
+import { Readable } from 'stream';
 import envConfig from './env-config';
 
-const logoFile = resolve(process.cwd(), 'logo.png');
 const errorsFile = resolve(process.cwd(), 'errors.txt');
 const storageDir = resolve(process.cwd(), 'storage');
 if (!existsSync(storageDir)) mkdirSync(storageDir);
@@ -121,19 +121,9 @@ async function downloadImage(url: string, path: string) {
     url = proxyUrl.href;
   }
 
-  const image = await loadImage(url);
-  const logo = await loadImage(logoFile);
-
-  const canvas = new Canvas(image.width, image.height);
-  const ctx = canvas.getContext('2d');
-
-  ctx.drawImage(image, 0, 0);
-
-  ctx.globalAlpha = 0.33;
-  const random = (i: number) => ~~(i * Math.random());
-  ctx.drawImage(logo, random(canvas.width  - logo.width), random(canvas.height - logo.height));
-
-  writeFileSync(path, canvas.toBuffer('image/webp'));
+  const response = await axios.get<Readable>(url, { responseType: 'stream' });
+  response.data.pipe(createWriteStream(path));
+  await new Promise(res => setTimeout(res, 100));
 
   return true;
 }

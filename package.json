@@ -14,7 +14,7 @@
     "lint": "eslint \"./src/**/*.ts\" --fix"
   },
   "dependencies": {
-    "@napi-rs/canvas": "^0.1.51",
+    "axios": "^1.6.7",
     "dotenv": "^16.4.5",
     "env-var": "^7.4.1",
     "instagram-private-api": "^1.46.0",
