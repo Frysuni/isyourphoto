@@ -108,7 +108,8 @@ async function scan() {
   } while (userFeed.isMoreAvailable());
 
   writeFileSync(resolve(storageDir, 'manifest.json'), JSON.stringify(metadata));
-
+  await ig.account.logout();
+  ig.destroy();
   const time = ~~((Date.now() - startTime) / 1000);
   process.stdout.write(`SCAN Ended in ${time} seconds.\n\n`);
 }
@@ -132,7 +133,7 @@ function parseCollection(item: UserFeedResponseItemsItem) {
   if (item.media_type !== 8) return false;
 
   const caption = item.caption?.text.split('\n')[0] ?? ' ';
-  const date = new Date(item.taken_at * 1000).toLocaleDateString();
+  const date = new Date(item.taken_at * 1000).toDateString();
 
   const images = item.carousel_media!.map(media => {
     const url = media.image_versions2.candidates.sort((a, b) => a.height * a.width + b.height * b.width)[0].url;
