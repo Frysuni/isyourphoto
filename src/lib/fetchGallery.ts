@@ -1,3 +1,5 @@
+import { GalleryManifest } from "../types/gallery";
+
 export const getGalleryURL = (path: string) => {
   const url = `${process.env.NEXT_PUBLIC_GALLERY_URL}${path}`
   return url;
@@ -18,7 +20,6 @@ const bb = async () => {
     throw response;
   }
   if (!response.ok) {
-    console.log(response.status)
     console.error(response.statusText);
     throw new Error(response.statusText);
   }
@@ -33,6 +34,6 @@ const bb = async () => {
 let gallery = bb();
 setInterval(() => gallery = bb(), 53_000);
 
-export const fetchGallery = async () => {
+export const fetchGallery = async (): Promise<GalleryManifest[]> => {
   return await gallery;
 };

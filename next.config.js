@@ -3,7 +3,7 @@ const nextConfig = {
   swcMinify: true,
   output: 'standalone',
   images: {
-    domains: ["localhost", "res.cloudinary.com"],
+    domains: ["localhost", "cdn.isyourphoto.ru"],
   },
 };
 module.exports = nextConfig;

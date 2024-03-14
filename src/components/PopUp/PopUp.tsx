@@ -9,9 +9,11 @@ const styles: Record<string, CSSProperties> = {
     left: 0,
     width: '100%',
     height: '100%',
-    display: 'flex',
+    // display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-start',
+    pointerEvents: 'none',
+    display: 'none',
   },
   
   popup: {
@@ -19,7 +21,7 @@ const styles: Record<string, CSSProperties> = {
     width: '400px',
     border: '2px solid green', /* Бордер зеленого цвета */
     borderRadius: '8px',
-    transition: 'all 1s'
+    transition: 'all 1s',
   },
   
   popupHeader: {
@@ -41,6 +43,7 @@ const styles: Record<string, CSSProperties> = {
     fontSize: '1.5em',
     cursor: 'pointer',
     color: 'green', /* Цвет крестика */
+    pointerEvents: 'auto',
   },
   
   'closeBtn:hover': {

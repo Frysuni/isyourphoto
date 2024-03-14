@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Box, AppBar, useScrollTrigger, Divider } from "@mui/material";
+import { Box, AppBar, useScrollTrigger } from "@mui/material";
 import TopBar from "./TopBar";
 import NavDialog from "./NavDialog";
 import Footer from "./Footer";
 
 const PAGES = [
-  { title: "Home", path: "/" },
-  { title: "Gallery", path: "/work" },
-  { title: "Contact", path: "/contact" }
+  { title: "Главная", path: "/" },
+  { title: "Мои фотографии", path: "/work" },
+  { title: "Хочу фотку!", path: 'https://t.me/bbymcqueen' }
 ];
 
 const META = {
@@ -47,28 +47,6 @@ const Layout = ({ children, title, colorInvert = false }: LayoutProps) => {
     <>
       <Head>
         <title>{title || META.title}</title>
-        <meta name="description" content={META.description} />
-        <link
-          rel="canonical"
-          href={`https://armonvanphoto.com${router.asPath}`}
-        />
-        <meta
-          property="og:url"
-          content={`https://armonvanphoto.com${router.asPath}`}
-        />
-        <meta property="og:title" content={title || META.title} />
-        <meta property="og:description" content={META.description} />
-        <meta property="og:site_name" content="AV Photography" />
-        <meta property="og:type" content={META.type} />
-        <meta property="og:image" content={META.image} />
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta
-          property="twitter:url"
-          content={`https://armonvanphoto.com${router.asPath}`}
-        />
-        <meta property="twitter:title" content={title || META.title} />
-        <meta property="twitter:description" content={META.description} />
-        <meta property="twitter:image" content={META.image} />
       </Head>
 
       <Box display="flex" flexDirection="column" minHeight="100vh">

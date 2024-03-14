@@ -1,10 +1,8 @@
 import type { GetStaticProps, GetStaticPaths } from "next";
 import Head from "next/head";
 import { ParsedUrlQuery } from "querystring";
-import { fetchData } from "../../lib/fetchData";
 import { Box } from "@mui/system";
 import ImageGallery from "../../components/Work/ImageGallery";
-import { Category } from "../../types/strapi/Category";
 import { GalleryManifest } from "../../types/gallery";
 import { fetchGallery } from "../../lib/fetchGallery";
 
@@ -71,3 +69,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     revalidate: 300,
   };
 };
+export const dynamic = 'error'

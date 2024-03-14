@@ -644,29 +644,6 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.7.2.tgz#2d4260033e199b3032a08b41348ac10de21c47e9"
   integrity sha512-RbhOOTCNoCrbfkRyoXODZp75MlpiHMgbE5MEBZAnnnLyQNgrigEj4p0lzsMDyc1zVsJDLrivB58tgg3emX0eEA==
 
-"@sendgrid/client@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@sendgrid/client/-/client-7.7.0.tgz#f8f67abd604205a0d0b1af091b61517ef465fdbf"
-  integrity sha512-SxH+y8jeAQSnDavrTD0uGDXYIIkFylCo+eDofVmZLQ0f862nnqbC3Vd1ej6b7Le7lboyzQF6F7Fodv02rYspuA==
-  dependencies:
-    "@sendgrid/helpers" "^7.7.0"
-    axios "^0.26.0"
-
-"@sendgrid/helpers@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@sendgrid/helpers/-/helpers-7.7.0.tgz#93fb4b6e2f0dc65080440d6a784cc93e8e148757"
-  integrity sha512-3AsAxfN3GDBcXoZ/y1mzAAbKzTtUZ5+ZrHOmWQ279AuaFXUNCh9bPnRpN504bgveTqoW+11IzPg3I0WVgDINpw==
-  dependencies:
-    deepmerge "^4.2.2"
-
-"@sendgrid/mail@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@sendgrid/mail/-/mail-7.7.0.tgz#aba09f5ce2e9d8ceee92284c3ea8b4a90b0e38fe"
-  integrity sha512-5+nApPE9wINBvHSUxwOxkkQqM/IAAaBYoP9hw7WwgDNQPxraruVqHizeTitVtKGiqWCKm2mnjh4XGN3fvFLqaw==
-  dependencies:
-    "@sendgrid/client" "^7.7.0"
-    "@sendgrid/helpers" "^7.7.0"
-
 "@swc/helpers@0.4.11":
   version "0.4.11"
   resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.4.11.tgz#db23a376761b3d31c26502122f349a21b592c8de"
@@ -1012,13 +989,6 @@ axios@^0.24.0:
   dependencies:
     follow-redirects "^1.14.4"
 
-axios@^0.26.0:
-  version "0.26.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.26.1.tgz#1ede41c51fcf51bbbd6fd43669caaa4f0495aaa9"
-  integrity sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==
-  dependencies:
-    follow-redirects "^1.14.8"
-
 axobject-query@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/axobject-query/-/axobject-query-3.2.1.tgz#39c378a6e3b06ca679f29138151e45b2b32da62a"
@@ -1305,11 +1275,6 @@ deepmerge@^2.1.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.2.1.tgz#5d3ff22a01c00f645405a2fbc17d0778a1801170"
   integrity sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==
-
-deepmerge@^4.2.2:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.3.1.tgz#44b5f2147cd3b00d4b56137685966f26fd25dd4a"
-  integrity sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==
 
 define-data-property@^1.0.1, define-data-property@^1.1.2, define-data-property@^1.1.4:
   version "1.1.4"
@@ -1835,7 +1800,7 @@ flatted@^3.2.9:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.3.1.tgz#21db470729a6734d4997002f439cb308987f567a"
   integrity sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==
 
-follow-redirects@^1.14.4, follow-redirects@^1.14.8:
+follow-redirects@^1.14.4:
   version "1.15.5"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.5.tgz#54d4d6d062c0fa7d9d17feb008461550e3ba8020"
   integrity sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==

@@ -1,24 +1,13 @@
 import React from "react";
-import { GetStaticProps } from "next";
 import { useEffect, useState } from "react";
 import { Box, Container } from "@mui/material";
 import NoSsr from "@mui/material/NoSsr";
 import Layout from "../Layout";
-import { Welcome, Bio, PhotoModal, CategoryBg } from "../components/Home";
-import { LandingAbout, LandingPhoto } from "../types/strapi/Landing";
-import { fetchData } from "../lib/fetchData";
-import { getStrapiMedia } from "../lib/getStrapiMedia";
+import { Welcome, Bio, PhotoModal } from "../components/Home";
 import Popup from "../components/PopUp/PopUp";
 
-interface APICall {
-  landingPhotos: LandingPhoto[];
-  aboutData: LandingAbout;
-}
-
-const Home = ({ landingPhotos, aboutData }: APICall) => {
+const Home = () => {
   const [modalState, setModalState] = useState({ open: false, image: "" });
-
-  const welcomeHeroData = landingPhotos[0]; //grab background img for hero(Welcome) section only
 
   useEffect(() => {
     const jarallaxInit = async () => {
@@ -83,7 +72,7 @@ const Home = ({ landingPhotos, aboutData }: APICall) => {
       >
         <Container maxWidth="lg">
           <Box display="flex" flexDirection="column" alignItems="center">
-            <Box sx={styles(getStrapiMedia(welcomeHeroData.image))} />
+            <Box sx={styles('/images/ksyu.jpg')} />
             <Welcome />
             <Box>
               <NoSsr>
@@ -111,7 +100,7 @@ const Home = ({ landingPhotos, aboutData }: APICall) => {
 
       <Box id="bio" minHeight="100vh" display="flex" alignItems="center">
       <Container>
-        <Bio aboutData={aboutData} />
+        <Bio />
       </Container>
     </Box>
 
@@ -125,27 +114,3 @@ const Home = ({ landingPhotos, aboutData }: APICall) => {
 };
 
 export default Home;
-
-export const getStaticProps: GetStaticProps = async () => {
-  const landingPhotosRes = await fetchData("/landing", {
-    populate: {
-      photos: {
-        // Populate all relations in level-photos
-        populate: "*",
-      },
-    },
-  });
-  const aboutRes = await fetchData("/about", {
-    populate: "image",
-  });
-
-  const landingPhotos = landingPhotosRes.data.attributes.photos;
-  const aboutData = aboutRes.data.attributes;
-  return {
-    props: {
-      landingPhotos,
-      aboutData,
-    },
-    revalidate: 30,
-  };
-};

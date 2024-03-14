@@ -13,7 +13,7 @@ const Statement = ({ title, subtitle }: StatementProps) => {
         fontWeight="bold"
         mb={2}
       >
-        Gallery
+        {title}
       </Typography>
       <Typography variant="subtitle1" color="primary" mb={4}>
         {subtitle}

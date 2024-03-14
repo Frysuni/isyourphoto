@@ -6,47 +6,66 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import { Container } from "@mui/material";
-import { LandingAbout } from "../../../types/strapi/Landing";
-import { getStrapiMedia } from "../../../lib/getStrapiMedia";
-import { randomElement } from "../../../utils/randomElement";
 import { fetchGallery } from "../../../lib/fetchGallery";
 import { useEffect, useState } from "react";
-import { GalleryManifest } from "../../../types/gallery";
 
-interface BioProps {
-  aboutData: LandingAbout;
-}
+const Bio = () => {
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-const Bio = ({ aboutData }: BioProps) => {
-  const { title, description } = aboutData;
-  const [ imageUrl, setImage ] = useState<string>();
   useEffect(() => {
-    const aaaaaa = async () => {
-      const collection = randomElement<GalleryManifest>(await fetchGallery());
-      const image = randomElement(collection.images);
-      setImage(image);
-      setTimeout(aaaaaa, 3000);
+    const loadImages = async () => {
+      const shuffle = (array: string[]) => array.sort(() => Math.random() - 0.5);
+      const images: string[] = [];
+      (await fetchGallery()).forEach(collection => {
+        collection.images.forEach(image => images.push(image));
+      });
+      const shuffled = shuffle(images)
+      setImageUrls(shuffled.slice(0, shuffled.length / 6));
     };
-    aaaaaa();
-  }, [])
+
+    loadImages();
+  }, []);
+
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = imageUrls.map((imageUrl) => {
+        return new Promise((resolve, reject) => {
+          const image = new Image();
+          image.src = imageUrl;
+          image.onload = resolve;
+          image.onerror = reject;
+        });
+      });
+      await Promise.race(imagePromises);
+      
+    };
+
+    preloadImages();
+  }, [imageUrls]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [imageUrls]);
+
   return (
     <Container maxWidth="xl">
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
-          <Box mb={3}>
-            <Typography variant="h4" fontWeight="700" gutterBottom>
-              {title}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              {description}
+          <Box component='div' mb={3}>
+            <Typography variant="h5" color="text.secondary">
+              Запечатлю мгновения во веках, превращая их в вечные картины вашей души.
             </Typography>
           </Box>
-          <Box>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
-                <Box display="flex" sx={{ gap: 1.75 }} flexDirection={'column'}>
+              <Grid item xs={16} md={20}>
+                <Box component='div' display="flex" sx={{ gap: 1.75 }} flexDirection={'column'}>
                   <Link href="/work" passHref>
-                    <Button variant="outlined" style={{ fontSize: '2rem'}} sx={{ px: { md: 20 } }}>
+                    <Button variant="outlined" style={{ fontSize: '2rem'}}>
                       <Box
                         component="img"
                         src={"/images/main-icon.png"}
@@ -55,16 +74,15 @@ const Bio = ({ aboutData }: BioProps) => {
                         height={50}
                         mr={0.6}
                       />
-                      Gallery
+                      Галерея
                     </Button>
                   </Link>
-                  <Link href="/contact" passHref>
-                    <Button variant="outlined" sx={{ px: { md: 20 } }} style={{ fontSize: '2rem'}} type="submit">Contact</Button>
+                  <Link href="https://t.me/bbymcqueen" passHref>
+                    <Button variant="outlined" style={{ fontSize: '1.8rem', borderColor: 'black', borderWidth: '3px' }} type="submit">Я тоже хочу фотку!</Button>
                   </Link>
                 </Box>
               </Grid>
             </Grid>
-          </Box>
         </Grid>
         <Grid
           item
@@ -73,21 +91,23 @@ const Bio = ({ aboutData }: BioProps) => {
           alignItems="center"
           xs={12}
           md={6}
-          sx={{
-            display: { xs: "none", md: "flex" },
-          }}
         >
-          {imageUrl && <Box component={Card} boxShadow={4} height={1} width={1}>
-            <Box
-              component={CardMedia}
-              height={1}
-              width={1}
-              minHeight={400}
-              image={imageUrl}
-              
-              style={{ objectFit: 'cover', backgroundPositionY: '30%', transition: 'background-image .5s' }}
-            />
-          </Box>}
+          {imageUrls.length > 0 && (
+            <Box component={Card} boxShadow={4} height={1} width={1}>
+              <Box
+                component={CardMedia}
+                height={1}
+                width={1}
+                minHeight={400}
+                style={{
+                  backgroundImage: `url(${imageUrls[currentImageIndex]})`,
+                  objectFit: 'cover',
+                  backgroundPositionY: '30%',
+                  transition: 'background-image 0.3s',
+                }}
+              >{" "}</Box>
+            </Box>
+          )}
         </Grid>
       </Grid>
     </Container>

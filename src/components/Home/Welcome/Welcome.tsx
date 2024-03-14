@@ -22,7 +22,7 @@ const Welcome = () => {
           letterSpacing: "1.5px",
         }}
       >
-        Outdoor & Retro Photographer
+        Ethereal Moment Capturer
       </Typography>
       <Typography
         variant={isSm ? "h2" : "h3"}
