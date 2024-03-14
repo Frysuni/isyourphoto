@@ -1,9 +1,10 @@
+import { randomInt } from "crypto";
 import { UserFeedResponseItemsItem } from "instagram-private-api";
 
 export function extractImages(feedItem: UserFeedResponseItemsItem) {
   const images = feedItem.carousel_media!.map(media => {
     return {
-      filename: `/${media.id.split('_')[0]}.webp`,
+      filename: `${media.id.split('_')[0]}-${randomInt(100, 20000)}.webp`,
       url: media.image_versions2.candidates.sort((a, b) => a.height * a.width + b.height * b.width)[0].url,
     };
   });
