@@ -5,12 +5,17 @@ config();
 const env = from(process.env);
 
 export const envConfig = {
-  igLogin: env.get('IG-LOGIN').required().asString(),
-  igPassword: env.get('IG-PASSWORD').required().asString(),
-  igTarget: env.get('IG-TARGET').required().asString(),
-  proxyIg: env.get('PROXY_IG').asString(),
-  proxyCustom: env.get('PROXY_CUSTOM').asString(),
-  proxyPass: env.get('PROXY_PASS').asString(),
-  server: env.get('SERVER_PORT').default('0').asPortNumber(),
+  ig: {
+    login: env.get('IG_LOGIN').required().asString(),
+    password: env.get('IG_PASSWORD').required().asString(),
+    target: env.get('IG_TARGET').required().asString(),
+  },
+  s3: {
+    bucket: env.get('S3_BUCKET').required().asString(),
+    endpointUrl: env.get('S3_ENDPOINT-URL').default('https://hb.vkcs.cloud').asUrlObject(),
+    accessKeyId: env.get('S3_ACCESS-KEY-ID').required().asString(),
+    secretAccessKey: env.get('S3_SECRET-ACCESS-KEY').required().asString(),
+    defaultRegion: env.get('S3_DEFAULT-REGION').default('ru-msk').asString(),
+  },
 };
 export default envConfig;
