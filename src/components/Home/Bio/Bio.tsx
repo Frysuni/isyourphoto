@@ -7,11 +7,26 @@ import Button from "@mui/material/Button";
 import Link from "next/link";
 import { Container } from "@mui/material";
 import { fetchGallery } from "../../../lib/fetchGallery";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { randomElement } from "../../../utils/randomElement";
+
+const texts = [
+  "Снимаю мир глазами души: красота в деталях, вдохновение в каждом кадре.",
+  "Фиксирую мгновения, которые переполняют сердце. Мои фотографии — отражение эмоций и страстей.",
+  "Искусство в каждом кадре: игра света, тени и формы, оживающие под моим объективом.",
+  "Мой фотоальбом — это путешествие в мир фантазии, где реальность сливается с мечтами.",
+  "Фотографии, наполненные жизнью и смыслом, созданные с любовью к красоте и творчеству.",
+  "Захватываю уникальные моменты жизни, оставляя след в сердцах и в памяти каждого, кто видит мои работы.",
+  "Каждый кадр — это история, рассказанная через объектив, с любовью к деталям и вниманием к эмоциям.",
+  "Мое видение мира — это композиция из красок, форм и текстур, воплощенная в каждой фотографии.",
+  "Фотографии, которые заставляют задуматься, мечтать и вдохновляют на новые открытия.",
+  "Творческий взгляд на привычные вещи: обыденность превращается в искусство под моим объективом.",
+];
 
 const Bio = () => {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const text = useRef(randomElement(texts));
 
   useEffect(() => {
     const loadImages = async () => {
@@ -58,7 +73,7 @@ const Bio = () => {
         <Grid item xs={12} md={6}>
           <Box component='div' mb={3}>
             <Typography variant="h5" color="text.secondary" pt='10%'>
-              Запечатлю мгновения во веках, превращая их в вечные картины вашей души.
+              {text.current}
             </Typography>
           </Box>
             <Grid container spacing={2}>
