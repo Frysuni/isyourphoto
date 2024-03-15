@@ -7,7 +7,7 @@ export const getGalleryURL = (path: string) => {
 
 const bb = async () => {
   const response = await fetch(
-    getGalleryURL('/manifest.json'),
+    getGalleryURL('manifest.json'),
     {
       headers: {
         "Content-Type": "application/json",

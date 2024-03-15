@@ -57,7 +57,7 @@ const Bio = () => {
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
           <Box component='div' mb={3}>
-            <Typography variant="h5" color="text.secondary">
+            <Typography variant="h5" color="text.secondary" pt='10%'>
               Запечатлю мгновения во веках, превращая их в вечные картины вашей души.
             </Typography>
           </Box>
@@ -78,7 +78,7 @@ const Bio = () => {
                     </Button>
                   </Link>
                   <Link href="https://t.me/bbymcqueen" passHref>
-                    <Button variant="outlined" style={{ fontSize: '1.8rem', borderColor: 'black', borderWidth: '3px' }} type="submit">Я тоже хочу фотку!</Button>
+                    <Button variant="outlined" style={{ fontSize: '1.5rem', borderColor: 'black', borderWidth: '3px' }} type="submit">Я тоже хочу фотку!</Button>
                   </Link>
                 </Box>
               </Grid>
