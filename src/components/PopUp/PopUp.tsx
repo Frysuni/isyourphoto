@@ -9,19 +9,21 @@ const styles: Record<string, CSSProperties> = {
     left: 0,
     width: '100%',
     height: '100%',
-    // display: 'flex',
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-start',
     pointerEvents: 'none',
-    display: 'none',
+    color: 'whitesmoke'
   },
   
   popup: {
-    backgroundColor: 'lightgreen', /* Зеленый цвет фона */
-    width: '400px',
-    border: '2px solid green', /* Бордер зеленого цвета */
+    backgroundColor: 'rgba(50, 50, 50, 0.5)', /* Зеленый цвет фона */
+    width: '50%',
+    minWidth: '300px',
+    border: '2px solid white', /* Бордер зеленого цвета */
     borderRadius: '8px',
     transition: 'all 1s',
+    boxShadow: '0px 3px 10px 2px white, inset 0 -2px 5px 1px'
   },
   
   popupHeader: {
@@ -29,12 +31,13 @@ const styles: Record<string, CSSProperties> = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '10px',
-    borderBottom: '1px solid green', /* Бордер между заголовком и содержимым */
   },
   
   popupTitle: {
     fontSize: '1.2em',
-    fontWeight: 'bold',
+    textAlign: 'center',
+    width: '100%',
+    fontWeight: 'normal',
   },
   
   closeBtn: {
@@ -42,17 +45,8 @@ const styles: Record<string, CSSProperties> = {
     border: 'none',
     fontSize: '1.5em',
     cursor: 'pointer',
-    color: 'green', /* Цвет крестика */
+    color: 'white', /* Цвет крестика */
     pointerEvents: 'auto',
-  },
-  
-  'closeBtn:hover': {
-    color: 'darkgreen', /* Цвет крестика при наведении */
-  },
-  
-  popupContent: {
-    padding: '0 10px',
-    textAlign: 'center'
   },
   
 }
@@ -69,16 +63,12 @@ const Popup: React.FC = () => {
     <>
       {shouldMount && (
         <div style={styles.popupContainer}>
-          <div style={{ ...styles.popup, transform: stage == 'enter' ? 'translateY(60px)' : 'translateY(-200px)' }}>
+          <div style={{ ...styles.popup, transform: stage == 'enter' ? 'translateY(80px)' : 'translateY(-200px)' }}>
             <div style={styles.popupHeader}>
-              <span style={styles.popupTitle}>Индивидуальный проект</span>
+              <span style={styles.popupTitle}>Итоговый проект: Ибрагим Зинатуллин</span>
               <button style={styles.closeBtn} onClick={handleClose}>
                 &times;
               </button>
-            </div>
-            <div style={styles.popupContent}>
-              {/* Содержимое вашего pop-up окна */}
-              <p>Автор проекта: Ибрагим Зинатуллин 11А</p>
             </div>
           </div>
         </div>
