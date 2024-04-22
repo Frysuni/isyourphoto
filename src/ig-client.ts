@@ -53,9 +53,9 @@ export class IgClient {
 
       this.ig.state.generateDevice(envConfig.ig.login);
 
-      // await ig.simulate.preLoginFlow();
+      // await this.ig.simulate.preLoginFlow();
       await this.ig.account.login(envConfig.ig.login, envConfig.ig.password);
-      // process.nextTick(async () => await ig.simulate.postLoginFlow());
+      // process.nextTick(async () => await this.ig.simulate.postLoginFlow());
 
       await this.ig.account.currentUser();
 
