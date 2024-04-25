@@ -21,7 +21,6 @@ import {
   THUMBNAIL_SIZE_TOTAL,
 } from "../../../utils/consts";
 import Thumbnails from "./Thumbnails";
-import { CollectionImage } from "../../../types/strapi/Category";
 
 interface ImageGalleryProps {
   photoList: {

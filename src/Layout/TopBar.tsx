@@ -8,13 +8,12 @@ import {
   useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import NavLinks from "../NavLinks";
-import { Page } from "../../types/strapi/Shared";
+import NavLinks from "./NavLinks";
 
 interface TopBarProps {
   handleClickOpen: () => void;
   handleClose: () => void;
-  pages: Page[];
+  pages: { title: string, path: string}[];
   colorInvert: boolean;
 }
 const TopBar = ({

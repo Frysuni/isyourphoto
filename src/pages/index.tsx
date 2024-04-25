@@ -4,7 +4,6 @@ import { Box, Container } from "@mui/material";
 import NoSsr from "@mui/material/NoSsr";
 import Layout from "../Layout";
 import { Welcome, Bio, PhotoModal } from "../components/Home";
-import Popup from "../components/PopUp/PopUp";
 
 const Home = () => {
   const [modalState, setModalState] = useState({ open: false, image: "" });
@@ -63,7 +62,6 @@ const Home = () => {
 
   return (
     <Layout colorInvert={true}>
-      <Popup />
       <Box
         minHeight="100vh"
         display="flex"
@@ -72,7 +70,7 @@ const Home = () => {
       >
         <Container maxWidth="lg">
           <Box display="flex" flexDirection="column" alignItems="center">
-            <Box sx={styles('/images/ksyu.jpg')} />
+            <Box sx={styles('/images/ksyu.jpeg')} />
             <Welcome />
             <Box>
               <NoSsr>

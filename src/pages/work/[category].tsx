@@ -3,8 +3,7 @@ import Head from "next/head";
 import { ParsedUrlQuery } from "querystring";
 import { Box } from "@mui/system";
 import ImageGallery from "../../components/Work/ImageGallery";
-import { GalleryManifest } from "../../types/gallery";
-import { fetchGallery } from "../../lib/fetchGallery";
+import { GalleryManifest, fetchGallery } from "../../utils/fetchGallery";
 
 interface APICall {
   singleCategory: GalleryManifest;

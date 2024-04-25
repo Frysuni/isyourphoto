@@ -2,7 +2,7 @@ import Link from "next/link";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { GalleryManifest } from "../../../types/gallery";
+import { GalleryManifest } from "../../utils/fetchGallery";
 
 interface CategoryColumnProps {
   category_data: GalleryManifest[];

@@ -1,9 +1,8 @@
 import type { GetStaticProps } from "next";
 import { Box, Container, Typography } from "@mui/material";
 import Layout from "../../Layout";
-import { Statement, CategoryColumn } from "../../components/Work";
-import { GalleryManifest } from "../../types/gallery";
-import { fetchGallery } from "../../lib/fetchGallery";
+import { CategoryColumn } from "../../components/Work";
+import { GalleryManifest, fetchGallery } from "../../utils/fetchGallery";
 import { CSSProperties } from "@mui/material/styles/createMixins";
 import { useEffect, useRef, useState } from "react";
 
@@ -32,6 +31,16 @@ let texts = shuffle([
   "Сияние в объективе: мои эмоциональные фотографии и моменты прозрения.",
   "Фотографические визуальные поэмы: истории, рассказанные моими объективами.",
   "Захватывающие мгновения: моя фотографическая история в цвете и эмоции.",
+  "Путешествуйте вглубь каждого кадра и ощутите мир таким, каким я его вижу.",
+  "Здесь каждая фотография рассказывает свою уникальную историю. Погрузитесь в эти моменты.",
+  "Откройте для себя коллекцию моментов, запечатлённых во времени и пространстве.",
+  "Наша галерея — это дверь в мир неожиданных уголков и захватывающих сцен.",
+  "Изучите тщательно отобранные работы, каждая из которых выражает собой чистую эмоцию и глубокую мысль.",
+  "Здесь вы найдёте изображения, которые вызывают восхищение и вдохновение, открывая новые перспективы.",
+  "Эта галерея — это взгляд через мой объектив, приглашение увидеть мир моими глазами.",
+  "Подборка лучших работ, каждая из которых заставляет замереть и задуматься.",
+  "Прогуляйтесь по галерее изображений, где каждое фото — это исследование света и тени.",
+  "Ощутите ритм и гармонию мира через эти в carefully curated collection of moments that transcend the ordinary.",
 ])
 
 const Work = ({ gallery }: APICall) => {
@@ -47,7 +56,7 @@ const Work = ({ gallery }: APICall) => {
         textRef.current += 1;
         timerRef.current = setTimeout(typeEffect, 30); // Скорость печати (задержка между буквами)
       } else {
-        timerRef.current = setTimeout(eraseEffect, 1000); // Задержка перед стиранием текста
+        timerRef.current = setTimeout(eraseEffect, 2000); // Задержка перед стиранием текста
       }
     };
 
@@ -106,7 +115,7 @@ const Work = ({ gallery }: APICall) => {
         </Box>
           <CategoryColumn category_data={gallery} />
           <span style={spanStyles()}>All information is automatically received from
-            <a href="https://www.instagram.com/isyourphoto/" target="_blank" rel="noreferrer"> Instagram (IsYourPhoto, Ksyu)</a>
+            <a href="https://www.instagram.com/isyourphoto/" style={{ textDecoration: 'none' }} target="_blank" rel="noreferrer"> Instagram (IsYourPhoto, Ksyu)</a>
             , all rights are delegated
           </span>
         </Container>

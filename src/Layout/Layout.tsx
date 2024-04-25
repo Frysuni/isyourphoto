@@ -48,7 +48,6 @@ const Layout = ({ children, title, colorInvert = false }: LayoutProps) => {
       <Head>
         <title>{title || META.title}</title>
       </Head>
-
       <Box display="flex" flexDirection="column" minHeight="100vh">
         <AppBar
           // position="sticky"

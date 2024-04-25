@@ -1,15 +1,15 @@
 import { Box, Stack } from "@mui/material/";
-import sideScroll from "../../../../utils/sideScroll";
+import sideScroll from "../../../utils/sideScroll";
 import {
   calculateThumbnailOffset,
   calculateThumbnailScroll,
-} from "../../../../utils/calculateThumbnail";
+} from "../../../utils/calculateThumbnail";
 import {
   THUMBNAIL_WIDTH,
   THUMBNAIL_HEIGHT,
   THUMBNAIL_MARGIN,
   ENGAGE_SCROLL_VALUE,
-} from "../../../../utils/consts";
+} from "../../../utils/consts";
 
 interface ThumbnailsProps {
   photoList: {

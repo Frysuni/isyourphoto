@@ -3,11 +3,10 @@ import { useRouter } from "next/router";
 import { useTheme, Button, IconButton } from "@mui/material";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import { Page } from "../../types/strapi/Shared";
 
 interface NavLinksProps {
   handleClose: () => void;
-  pages: Page[];
+  pages: { title: string, path: string }[];
   colorInvert: boolean;
 }
 

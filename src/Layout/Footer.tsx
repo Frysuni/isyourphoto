@@ -27,7 +27,7 @@ const Footer = () => {
           />
         </Box>
         <Box textAlign='center'>
-          Designed and developed by <a href="https://github.com/Frysuni" target="_blank" rel="noreferrer">Frys</a>
+          Designed and developed by <a style={{ textDecoration: 'none' }}  href="https://github.com/Frysuni" target="_blank" rel="noreferrer">Frys</a>
         </Box>
         <Box sx={{ textAlign: "center" }}>
           <Typography color="primary" sx={{ fontSize: 10, lineHeight: 1.6 }}>

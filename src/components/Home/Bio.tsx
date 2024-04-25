@@ -6,9 +6,9 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import { Container } from "@mui/material";
-import { fetchGallery } from "../../../lib/fetchGallery";
+import { fetchGallery } from "../../utils/fetchGallery";
 import { useEffect, useRef, useState } from "react";
-import { randomElement } from "../../../utils/randomElement";
+import { randomElement } from "../../utils/randomElement";
 
 const texts = [
   "Снимаю мир глазами души: красота в деталях, вдохновение в каждом кадре.",
@@ -21,6 +21,26 @@ const texts = [
   "Мое видение мира — это композиция из красок, форм и текстур, воплощенная в каждой фотографии.",
   "Фотографии, которые заставляют задуматься, мечтать и вдохновляют на новые открытия.",
   "Творческий взгляд на привычные вещи: обыденность превращается в искусство под моим объективом.",
+  "В каждом кадре — история. Откройте мир через мои объективы.",
+  "Искусство видеть необычное в обыденном. Добро пожаловать в мою галерею.",
+  "Фотография как поэзия света. Загляните в моё воображение.",
+  "За гранью привычного — мир, который я вижу. Приглашаю вас на его исследование.",
+  "Создаю визуальные эмоции. Переживите их вместе со мной.",
+  "Творчество без границ. Каждый снимок — это приключение.",
+  "Мгновения, остановленные временем. Откройте вместе со мной красоту мгновенного.",
+  "Исследуйте мир через мой объектив. С каждым кадром вы увидите больше.",
+  "Фотография — мой язык. Слушайте его визуально.",
+  "Живите моментами, которые я запечатлел для вас.",
+  "Каждый кадр — отражение души. Позвольте мне показать вам его суть.",
+  "В поисках идеального момента. Присоединяйтесь к моему путешествию.",
+  "Фотография — это магия реальности. Делюсь этой магией с вами.",
+  "Зрительные истории, рассказанные светом. Откройте их для себя.",
+  "Мои фотографии — это врата в другие миры. Шагните через них.",
+  "Через объектив я говорю с миром. Послушайте мои визуальные рассказы.",
+  "Каждое изображение — путь к новому открытию. Исследуйте его со мной.",
+  "Открываю сердце миру через каждый снимок. Приглашаю вас почувствовать это.",
+  "Фотография как исследование — каждый кадр открывает новые горизонты.",
+  "Снимаю мир таким, каким его вижу — полным чудес и открытий.",
 ];
 
 const Bio = () => {
@@ -43,25 +63,20 @@ const Bio = () => {
   }, []);
 
   useEffect(() => {
-    const preloadImages = async () => {
-      const imagePromises = imageUrls.map((imageUrl) => {
-        return new Promise((resolve, reject) => {
-          const image = new Image();
-          image.src = imageUrl;
-          image.onload = resolve;
-          image.onerror = reject;
-        });
-      });
-      await Promise.race(imagePromises);
-      
-    };
-
-    preloadImages();
-  }, [imageUrls]);
-
-  useEffect(() => {
+    const preloadImage = (index: number) => new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = imageUrls[index];
+      image.onload = resolve;
+      image.onerror = reject;
+    })
+  
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
+      setCurrentImageIndex((prevIndex) => {
+        const currentIndex = (prevIndex + 1) % imageUrls.length;
+        const nextIndex = (currentIndex + 1) % imageUrls.length;
+        preloadImage(nextIndex);
+        return currentIndex;
+      });
     }, 3000);
 
     return () => clearInterval(interval);

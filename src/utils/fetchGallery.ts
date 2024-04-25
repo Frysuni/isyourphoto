@@ -1,11 +1,9 @@
-import { GalleryManifest } from "../types/gallery";
-
 export const getGalleryURL = (path: string) => {
   const url = `${process.env.NEXT_PUBLIC_GALLERY_URL}${path}`
   return url;
 };
 
-const bb = async () => {
+const getGallery = async () => {
   const response = await fetch(
     getGalleryURL('manifest.json'),
     {
@@ -31,9 +29,16 @@ const bb = async () => {
   return data;
 };
 
-let gallery = bb();
-setInterval(() => gallery = bb(), 53_000);
+let gallery = getGallery();
+setInterval(() => gallery = getGallery(), 53_000);
 
 export const fetchGallery = async (): Promise<GalleryManifest[]> => {
   return await gallery;
 };
+
+export interface GalleryManifest {
+  caption: string,
+  date: string,
+  code: string,
+  images: string[]
+}

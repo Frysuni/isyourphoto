@@ -3,13 +3,12 @@ import { useRouter } from "next/router";
 import { Dialog, IconButton, useTheme, Typography, Stack } from "@mui/material";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import CloseIcon from "@mui/icons-material/Close";
-import { Page } from "../../types/strapi/Shared";
 import TelegramIcon from '@mui/icons-material/Telegram';
 
 interface NavDialogProps {
   openNavDialog: boolean;
   handleClose: () => void;
-  pages: Page[];
+  pages: { title: string, path: string}[];
 }
 
 const NavDialog = ({ openNavDialog, handleClose, pages }: NavDialogProps) => {
@@ -42,6 +41,7 @@ const NavDialog = ({ openNavDialog, handleClose, pages }: NavDialogProps) => {
               <Typography
                 component="a"
                 color="primary"
+                style={{ textDecoration: 'none' }}
                 onClick={handleClose}
                 sx={{
                   ...(router.pathname === path && { fontWeight: "bold" }),
