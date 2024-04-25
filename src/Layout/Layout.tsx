@@ -28,7 +28,6 @@ interface LayoutProps {
 
 const Layout = ({ children, title, colorInvert = false }: LayoutProps) => {
   const [openNavDialog, setOpenNavDialog] = useState<boolean>(false);
-  const router = useRouter();
 
   const trigger = useScrollTrigger({
     disableHysteresis: true,

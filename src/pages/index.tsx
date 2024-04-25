@@ -3,10 +3,9 @@ import { useEffect, useState } from "react";
 import { Box, Container } from "@mui/material";
 import NoSsr from "@mui/material/NoSsr";
 import Layout from "../Layout";
-import { Welcome, Bio, PhotoModal } from "../components/Home";
+import { Welcome, Bio } from "../components/Home";
 
 const Home = () => {
-  const [modalState, setModalState] = useState({ open: false, image: "" });
 
   useEffect(() => {
     const jarallaxInit = async () => {
@@ -35,13 +34,6 @@ const Home = () => {
         behavior: "smooth",
       });
     }, 75);
-  };
-
-  const toggleModal = (image: string) => {
-    setModalState((prevState) => ({
-      open: !prevState.open,
-      image: prevState.open ? "" : image,
-    }));
   };
 
   const styles = (bgImg: string) => ({
@@ -101,12 +93,7 @@ const Home = () => {
         <Bio />
       </Container>
     </Box>
-
-      <PhotoModal
-        image={modalState.image}
-        open={modalState.open}
-        handleModalClose={() => toggleModal("")}
-      />
+  
     </Layout>
   );
 };
