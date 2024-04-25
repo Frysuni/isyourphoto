@@ -1,4 +1,4 @@
-import { GetObjectCommand, ListObjectsCommand, NoSuchKey, ObjectStorageClass, S3Client } from "@aws-sdk/client-s3";
+import { DeleteObjectsCommand, GetObjectCommand, ListObjectsCommand, NoSuchKey, ObjectStorageClass, S3Client } from "@aws-sdk/client-s3";
 import { Upload } from '@aws-sdk/lib-storage';
 import { Readable } from "stream";
 import envConfig from "./env-config";
@@ -28,6 +28,18 @@ export class S3 {
     });
 
     return upload.done().catch(handleError.bind('S3_UPLOAD'));
+  }
+
+  public async purge() {
+
+    const list = await this.list(true) as string[];
+    const command = new DeleteObjectsCommand({
+      Bucket: this.bucket,
+      Delete: {
+        Objects: list.map(a => ({ Key: a })),
+      },
+    });
+    return this.s3Client.send(command);
   }
 
   public async list(keyOnly = true) {

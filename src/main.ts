@@ -43,6 +43,8 @@ async function scan() {
     allFeedItems.push(...feedItems);
   } while (feed.isMoreAvailable());
 
+  allFeedItems.sort((a, b) => a.taken_at - b.taken_at);
+
   let oldManifest: CollectionMetadata[] = [];
   const rawOldManifest = await s3.get(MANIFEST_FILE);
   if (rawOldManifest === false) return;
