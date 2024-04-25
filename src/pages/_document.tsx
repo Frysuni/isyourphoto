@@ -6,7 +6,6 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          {/* PWA primary color */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
@@ -45,13 +44,10 @@ export default class MyDocument extends Document {
           />
           <link rel="manifest" href="/favicons/site.webmanifest" />
 
-          <meta name="emotion-insertion-point" content="" />
-
           <meta httpEquiv="ScreenOrientation" content="autoRotate:disabled" />
           <meta name="theme-color" content="#F6F4F1" />
           <meta name="msapplication-TileColor" content="#f7a047" />
 
-          {(this.props as any).emotionStyleTags}
         </Head>
         <body style={{ backgroundColor: "#F7F9FC", padding: 0, margin: 0 }}>
           <Main />

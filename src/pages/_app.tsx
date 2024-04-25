@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import theme from "../theme";
+import YandexMetrika from "../components/YandexMetrika";
 
 const MyApp: React.FunctionComponent<AppProps> = (props) => {
   const { Component, pageProps } = props;
@@ -13,6 +14,7 @@ const MyApp: React.FunctionComponent<AppProps> = (props) => {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
+      <YandexMetrika />
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Component {...pageProps} />
